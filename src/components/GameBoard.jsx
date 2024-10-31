@@ -1,28 +1,35 @@
-import { useState } from "react";
-
 const initialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
-  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+export default function GameBoard({ onSelectSquare, turns }) {
+  let gameBoard = initialGameBoard;
 
-  function handleButtonClick(rowIndex, colIndex) {
-    setGameBoard((prevGameBoard) => {
-      // create a copy of the game board to avoid mutating state
-      const updatedBoard = [
-        ...prevGameBoard.map((innerArray) => [...innerArray]),
-      ];
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const { row, col } = square;
 
-      // update the value of the clicked cell
-      updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
-      return updatedBoard;
-    });
-    // call the handleSelectSquare function to switch players
-    onSelectSquare();
+    gameBoard[row][col] = player;
   }
+
+  // const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+  // function handleButtonClick(rowIndex, colIndex) {
+  //   setGameBoard((prevGameBoard) => {
+  //     // create a copy of the game board to avoid mutating state
+  //     const updatedBoard = [
+  //       ...prevGameBoard.map((innerArray) => [...innerArray]),
+  //     ];
+
+  //     // update the value of the clicked cell
+  //     updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
+  //     return updatedBoard;
+  //   });
+  //   // call the handleSelectSquare function to switch players
+  //   onSelectSquare();
+  // }
   return (
     <ol id="game-board">
       {gameBoard.map((row, rowIndex) => (
@@ -30,7 +37,7 @@ export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button onClick={() => handleButtonClick(rowIndex, colIndex)}>
+                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>
                   {playerSymbol}
                 </button>
               </li>
