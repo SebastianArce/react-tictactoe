@@ -6,7 +6,7 @@ const initialGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
   function handleButtonClick(rowIndex, colIndex) {
@@ -17,9 +17,11 @@ export default function GameBoard() {
       ];
 
       // update the value of the clicked cell
-      updatedBoard[rowIndex][colIndex] = "X";
+      updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
       return updatedBoard;
     });
+    // call the handleSelectSquare function to switch players
+    onSelectSquare();
   }
   return (
     <ol id="game-board">
